@@ -10,12 +10,12 @@ use Sunra\PhpSimple\HtmlDomParser;
 class LostfilmParser
 {
     const DOMAIN = 'https://www.lostfilm.tv';
-    const PARSE_URL = '/new/';
+    const PARSE_URL = '/new/page_';
 
-    public function parse()
+    public function parse($page = 1)
     {
         $client = new GuzzleHttp\Client();
-        $res = $client->request('GET', self::DOMAIN . self::PARSE_URL);
+        $res = $client->request('GET', self::DOMAIN . self::PARSE_URL . $page);
         if ($res->getStatusCode() !== Response::HTTP_OK) {
             throw new \Exception(implode("\n", [
                 'Parsing problem, page not found',

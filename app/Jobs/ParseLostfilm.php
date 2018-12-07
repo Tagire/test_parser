@@ -16,6 +16,13 @@ class ParseLostfilm implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private $page;
+
+    public function __construct($page = 1)
+    {
+        $this->page = $page;
+    }
+
     /**
      * Execute the job.
      *
@@ -25,9 +32,10 @@ class ParseLostfilm implements ShouldQueue
     {
         $parser = new LostfilmParser();
         try {
-            $episodesData = $parser->parse();
+            $episodesData = $parser->parse($this->page);
         } catch (\Exception $e) {
             Log::critical($e->getMessage());
+            throw $e;
         }
 
         foreach ($episodesData as $episodeData) {

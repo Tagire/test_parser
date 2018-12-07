@@ -15,7 +15,7 @@ class ParseLostfilmTask extends Command
      *
      * @var string
      */
-    protected $signature = 'parse-lostfilm';
+    protected $signature = 'parse-lostfilm {--from=1} {--pages=1}';
 
     /**
      * The console command description.
@@ -41,6 +41,9 @@ class ParseLostfilmTask extends Command
      */
     public function handle()
     {
-        $this->dispatch(new ParseLostfilm());
+        foreach (range($this->option('from'), $this->option('pages')) as $page) {
+        echo $page;
+            $this->dispatch(new ParseLostfilm($page));
+        }
     }
 }
