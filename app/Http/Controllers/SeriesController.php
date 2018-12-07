@@ -15,18 +15,18 @@ class SeriesController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
+        $search = $request->get('search');
         $perPage = 10;
 
-        if (!empty($keyword)) {
-            $episodes = Episode::searchByEpisodeOrSeriesName($keyword)
+        if (!empty($search)) {
+            $episodes = Episode::searchByEpisodeOrSeriesName($search)
                 ->with('series')
                 ->paginate($perPage);
         } else {
             $episodes = Episode::orderBy('release_date_ru', 'DESC')->paginate($perPage);
         }
 
-        return view('series.index', compact('episodes', 'keyword'));
+        return view('series.index', compact('episodes', 'search'));
     }
 
 }
