@@ -21,6 +21,9 @@ class AddIndexesToEpisodesAndSeries extends Migration
             ->references('id')->on('series')
             ->onDelete('cascade');
         });
+        Schema::table('series', function(Blueprint $table) {
+            $table->index(['name'], 'name');
+        });
 
         DB::statement('ALTER TABLE episodes ADD FULLTEXT episodes_fulltext_index (name_ru, name_en)');
         DB::statement('ALTER TABLE series ADD FULLTEXT series_fulltext_index (name)');
@@ -34,10 +37,13 @@ class AddIndexesToEpisodesAndSeries extends Migration
     public function down()
     {
         Schema::table('episodes', function(Blueprint $table) {
+            $table->dropForeign(['series_id']);
+
             $table->dropIndex('series_id');
             $table->dropIndex('release_date_ru');
-
-            $table->dropForeign(['series_id']);
+        });
+        Schema::table('series', function(Blueprint $table) {
+            $table->dropIndex('name');
         });
 
         DB::statement('ALTER TABLE episodes DROP INDEX episodes_fulltext_index');
