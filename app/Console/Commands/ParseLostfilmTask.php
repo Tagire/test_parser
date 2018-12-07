@@ -41,7 +41,9 @@ class ParseLostfilmTask extends Command
      */
     public function handle()
     {
-        foreach (range($this->option('from'), $this->option('pages')) as $page) {
+        $from = intval($this->option('from'));
+        $to = $from + intval($this->option('pages'));
+        foreach (range($from, $to) as $page) {
             $this->info("Parsing page {$page}");
             $this->dispatch(new ParseLostfilm($page));
         }

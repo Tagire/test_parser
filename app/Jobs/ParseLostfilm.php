@@ -42,7 +42,7 @@ class ParseLostfilm implements ShouldQueue
             $series = Series::firstOrCreate([
                 'name' => $episodeData['series_name'],
             ]);
-            $episode = Episode::firstOrCreate([
+            $episode = Episode::firstOrNew([
                 'name_ru' => $episodeData['episode_name_ru'],
                 'name_en' => $episodeData['episode_name_en'],
                 'release_date_ru' => date('Y-m-d', strtotime($episodeData['release_date_ru'])),
@@ -50,6 +50,10 @@ class ParseLostfilm implements ShouldQueue
                 'details_link' => $episodeData['details_link'],
                 'series_id' => $series->id,
             ]);
+            if (!empty($episode->id)) {
+                return; //Already parsed page
+            }
+            $episode->save();
         }
     }
 }
