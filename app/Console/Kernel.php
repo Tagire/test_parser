@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Jobs\ParseLostfilm;
+use App\Console\Commands\ParseLostfilm;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //To use internal laravel cron uncomment this
-        //$schedule->job(new ParseLostfilm())->daily();
+        //$schedule->command(ParseLostfilm::class, ['--from 1', '--pages 10'])->daily();
     }
 
     /**
