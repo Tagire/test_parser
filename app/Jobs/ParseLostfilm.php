@@ -50,9 +50,11 @@ class ParseLostfilm implements ShouldQueue
                 'details_link' => $episodeData['details_link'],
                 'series_id' => $series->id,
             ]);
-            if (!empty($episode->id)) {
+            /*if (!empty($episode->id)) {
                 return; //Already parsed page
-            }
+            }*/ //This optimization was removed because if somebody
+            //Adds new episode while we parsing it will shift some episodes to
+            //next pages and script will stop when it should not
             $episode->save();
         }
     }
